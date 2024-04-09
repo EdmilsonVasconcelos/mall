@@ -14,7 +14,7 @@ export class ShopResponseDto {
     dto.name = shop.name;
     dto.phoneNumber = shop.phoneNumber;
     dto.isActive = shop.isActive;
-    dto.addresses = shop.addresses.length
+    dto.addresses = shop.addresses?.length
       ? AddressDto.toListDto(shop.addresses)
       : [];
 

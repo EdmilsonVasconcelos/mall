@@ -2,6 +2,8 @@ import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { Address } from 'src/shop/entities/address.entity';
 
 export class AddressDto {
+  id: number;
+
   @IsNotEmpty({ message: 'A rua é obrigatória.' })
   @IsString({ message: 'A rua deve ser uma string.' })
   @MaxLength(255, { message: 'A rua deve ter no máximo 255 caracteres.' })
@@ -21,6 +23,7 @@ export class AddressDto {
 
   static toDto(address: Address): AddressDto {
     const dto = new AddressDto();
+    dto.id = address.id;
     dto.street = address.street;
     dto.number = address.number;
     dto.city = address.city;

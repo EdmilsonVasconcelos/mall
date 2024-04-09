@@ -17,6 +17,7 @@ describe('ShopController', () => {
           provide: ShopService,
           useValue: {
             findAll: jest.fn().mockResolvedValue([]),
+            findOne: jest.fn().mockResolvedValue([]),
             create: jest.fn().mockResolvedValue({}),
           },
         },
@@ -42,6 +43,20 @@ describe('ShopController', () => {
         jest.spyOn(service, 'findAll').mockResolvedValue(shops);
 
         const response = await controller.findAll();
+
+        expect(response).toStrictEqual(responseExpected);
+      });
+    });
+
+    describe('findOne', () => {
+      it('should return shop', async () => {
+        const shop: Shop = createMockShop();
+
+        const responseExpected: ShopResponseDto = ShopResponseDto.toDto(shop);
+
+        jest.spyOn(service, 'findOne').mockResolvedValue(shop);
+
+        const response = await controller.findOne('1');
 
         expect(response).toStrictEqual(responseExpected);
       });

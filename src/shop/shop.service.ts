@@ -16,7 +16,9 @@ export class ShopService {
   }
 
   async findAll(): Promise<Shop[]> {
-    const shops = await this.shopRepository.find({ relations: ['addresses'] });
+    const shops: Shop[] = await this.shopRepository.find({
+      relations: ['addresses'],
+    });
 
     if (!shops.length) {
       throw new NotFoundException('No shops found');
@@ -25,8 +27,17 @@ export class ShopService {
     return shops;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shop`;
+  async findOne(id: number): Promise<Shop> {
+    const shop: Shop = await this.shopRepository.findOne({
+      where: { id },
+      relations: ['addresses'],
+    });
+
+    if (!shop) {
+      throw new NotFoundException(`Shop with id ${id} not found`);
+    }
+
+    return shop;
   }
 
   update(id: number, updateShopDto: UpdateShopDto) {

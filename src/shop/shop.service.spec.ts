@@ -44,6 +44,22 @@ describe('ShopService', () => {
     await expect(service.findAll()).rejects.toThrow('No shops found');
   });
 
+  it('should be able to find shop by id', async () => {
+    const shop: Shop = createMockShop();
+
+    jest.spyOn(repository, 'findOne').mockResolvedValue(shop);
+
+    const response = await service.findOne(1);
+
+    expect(response).toEqual(shop);
+  });
+
+  it('should throw not found exception when no shop was not found', async () => {
+    jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+    await expect(service.findOne(1)).rejects.toThrow('Shop with id 1 not found');
+  });
+
   it('should be able to create a shop', async () => {
     const shop = createMockShop();
 

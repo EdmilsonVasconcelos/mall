@@ -30,8 +30,9 @@ export class ShopController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shopService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<ShopResponseDto> {
+    const shop = await this.shopService.findOne(+id);
+    return ShopResponseDto.toDto(shop);
   }
 
   @Patch(':id')

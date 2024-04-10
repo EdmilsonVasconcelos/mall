@@ -11,9 +11,7 @@ export class CategoryService {
     private repository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CategoryRequestDto): Promise<Category> {
-    const category = Category.toDomain(createCategoryDto);
-
+  async create(category: Category): Promise<Category> {
     return this.repository.save(category);
   }
 

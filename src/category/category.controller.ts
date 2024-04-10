@@ -10,6 +10,7 @@ import {
 import { CategoryService } from './category.service';
 import { CategoryRequestDto } from './dto/category-request.dto';
 import { CategoryResponseDto } from './dto/category-response.dto';
+import { Category } from './entities/category.entity';
 
 @Controller('category')
 export class CategoryController {
@@ -19,7 +20,10 @@ export class CategoryController {
   async create(
     @Body() createCategoryDto: CategoryRequestDto,
   ): Promise<CategoryResponseDto> {
-    const category = await this.categoryService.create(createCategoryDto);
+    const category = await this.categoryService.create(
+      Category.toDomain(createCategoryDto),
+    );
+
     return CategoryResponseDto.toDto(category);
   }
 

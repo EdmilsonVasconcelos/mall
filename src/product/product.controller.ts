@@ -27,9 +27,11 @@ export class ProductController {
     return ProductResponseDto.toDto(product);
   }
 
-  @Get()
-  async findAll(): Promise<ProductResponseDto[]> {
-    const products = await this.productService.findAll();
+  @Get('category/:categoryId')
+  async findByCategory(
+    @Param('categoryId') categoryId: number,
+  ): Promise<ProductResponseDto[]> {
+    const products = await this.productService.findByCategory(categoryId);
     return ProductResponseDto.toListDto(products);
   }
 
@@ -37,6 +39,12 @@ export class ProductController {
   async findOne(@Param('id') id: string): Promise<ProductResponseDto> {
     const product = await this.productService.findOne(+id);
     return ProductResponseDto.toDto(product);
+  }
+
+  @Get()
+  async findAll(): Promise<ProductResponseDto[]> {
+    const products = await this.productService.findAll();
+    return ProductResponseDto.toListDto(products);
   }
 
   @Delete(':id')

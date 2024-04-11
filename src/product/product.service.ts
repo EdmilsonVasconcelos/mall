@@ -37,6 +37,19 @@ export class ProductService {
     return product;
   }
 
+  async findByCategory(categoryId: number): Promise<Product[]> {
+    const products = await this.repository.find({
+      where: { category: { id: categoryId } },
+      relations: ['category'],
+    });
+
+    if (!products.length) {
+      throw new NotFoundException('No products found');
+    }
+
+    return products;
+  }
+
   remove(id: number) {
     return `This action removes a #${id} product`;
   }

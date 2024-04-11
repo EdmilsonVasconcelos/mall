@@ -61,6 +61,25 @@ describe('ProductService', () => {
     await expect(service.findOne(1)).rejects.toThrow('Product 1 not found');
   });
 
+  it('shoud be able to find products by category', async () => {
+    const products: Product[] = [createMockProduct()];
+
+    jest.spyOn(repository, 'find').mockResolvedValue(products);
+
+    const response = await service.findByCategory(1);
+
+    expect(response).toEqual(products);
+    expect(response.length).toEqual(1);
+  });
+
+  it('should return not found when there are no finding by category', async () => {
+    jest.spyOn(repository, 'find').mockResolvedValue([]);
+
+    await expect(service.findByCategory(1)).rejects.toThrow(
+      'No products found',
+    );
+  });
+
   it('should be able to create a product', async () => {
     const product: Product = createMockProduct();
 

@@ -64,6 +64,18 @@ describe('ProductController', () => {
     expect(response).toStrictEqual(expectedResponse);
   });
 
+  it('should be able to find products by category', async () => {
+    const products = [createMockProduct()];
+
+    const expectedResponse = ProductResponseDto.toListDto(products);
+
+    jest.spyOn(service, 'findByCategory').mockResolvedValue(products);
+
+    const response = await controller.findByCategory(1);
+
+    expect(response).toStrictEqual(expectedResponse);
+  });
+
   it('should be able to create a product', async () => {
     const product = createMockProduct();
 

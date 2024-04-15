@@ -16,6 +16,11 @@ export class AddressDto {
   })
   number: string;
 
+  @IsNotEmpty({ message: 'O bairro é obrigatório.' })
+  @IsString({ message: 'O bairro deve ser uma string.' })
+  @MaxLength(255, { message: 'O bairro deve ter no máximo 255 caracteres.' })
+  neighborhood: string;
+
   @IsNotEmpty({ message: 'A cidade é obrigatória.' })
   @IsString({ message: 'A cidade deve ser uma string.' })
   @MaxLength(255, { message: 'A cidade deve ter no máximo 255 caracteres.' })
@@ -27,6 +32,7 @@ export class AddressDto {
     dto.street = address.street;
     dto.number = address.number;
     dto.city = address.city;
+    dto.neighborhood = address.neighborhood;
 
     return dto;
   }

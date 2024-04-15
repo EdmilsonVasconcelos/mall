@@ -21,6 +21,9 @@ export class Address {
   number: string;
 
   @Column()
+  neighborhood: string;
+
+  @Column()
   city: string;
 
   @ManyToOne(() => Shop, (shop) => shop.addresses)
@@ -37,6 +40,7 @@ export class Address {
     address.street = addressDto.street;
     address.number = addressDto.number;
     address.city = addressDto.city;
+    address.neighborhood = addressDto.neighborhood;
 
     return address;
   }

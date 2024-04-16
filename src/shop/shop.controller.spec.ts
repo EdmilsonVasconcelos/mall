@@ -4,6 +4,7 @@ import { ShopService } from './shop.service';
 import { Shop } from './entities/shop.entity';
 import { ShopResponseDto } from './dto/shop/shop-response.dto';
 import { Address } from './entities/address.entity';
+import { DeleteResult } from 'typeorm';
 
 describe('ShopController', () => {
   let controller: ShopController;
@@ -19,6 +20,8 @@ describe('ShopController', () => {
             findAll: jest.fn().mockResolvedValue([]),
             findOne: jest.fn().mockResolvedValue([]),
             create: jest.fn().mockResolvedValue({}),
+            update: jest.fn().mockResolvedValue({}),
+            remove: jest.fn().mockResolvedValue({}),
           },
         },
       ],
@@ -74,6 +77,28 @@ describe('ShopController', () => {
       const response = await controller.create(shop);
 
       expect(response).toStrictEqual(expectedResponse);
+    });
+  });
+
+  describe('Patch', () => {
+    it('should update a shop', async () => {
+      const shop: Shop = createMockShop();
+
+      jest.spyOn(service, 'update').mockResolvedValue(shop);
+
+      const response = await controller.update('1', shop);
+
+      expect(response).toStrictEqual(shop);
+    });
+  });
+
+  describe('Delete', () => {
+    it('should delete a shop', async () => {
+      jest.spyOn(service, 'remove').mockResolvedValue({} as DeleteResult);
+
+      const response = await controller.remove('1');
+
+      expect(response).toStrictEqual({} as DeleteResult);
     });
   });
 

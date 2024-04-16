@@ -3,12 +3,15 @@ import { UpdateShopDto } from './dto/shop/update-shop.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Shop } from './entities/shop.entity';
 import { Repository } from 'typeorm';
+import { Address } from './entities/address.entity';
 
 @Injectable()
 export class ShopService {
   constructor(
     @InjectRepository(Shop)
     private shopRepository: Repository<Shop>,
+    @InjectRepository(Address)
+    private addressRepository: Repository<Address>,
   ) {}
 
   async create(shop: Shop): Promise<Shop> {
@@ -40,11 +43,14 @@ export class ShopService {
     return shop;
   }
 
-  update(id: number, updateShopDto: UpdateShopDto) {
-    return `This action updates a #${id} shop`;
+  async update(id: number, updateShopDto: UpdateShopDto) {
+    updateShopDto.id = id;
+    return this.shopRepository.save(updateShopDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shop`;
+  async remove(id: number) {
+    const shop = await this.findOne(id);
+    await this.addressRepository.remove(shop.addresses);
+    return this.shopRepository.delete(id);
   }
 }

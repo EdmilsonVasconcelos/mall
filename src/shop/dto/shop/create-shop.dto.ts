@@ -8,6 +8,8 @@ import {
 import { AddressDto } from '../address/address.dto';
 
 export class CreateShopDto {
+  id: number;
+
   @IsNotEmpty({ message: 'O nome é obrigatório.' })
   @IsString({ message: 'O nome deve ser uma string.' })
   @MaxLength(255, { message: 'O nome deve ter no máximo 255 caracteres.' })

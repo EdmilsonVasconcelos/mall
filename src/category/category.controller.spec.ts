@@ -3,6 +3,8 @@ import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 import { CategoryResponseDto } from './dto/category-response.dto';
+import { CategoryRequestDto } from './dto/category-request.dto';
+import { DeleteResult } from 'typeorm';
 
 describe('CategoryController', () => {
   let controller: CategoryController;
@@ -18,6 +20,8 @@ describe('CategoryController', () => {
             findAll: jest.fn().mockResolvedValue([]),
             findOne: jest.fn().mockResolvedValue([]),
             create: jest.fn().mockResolvedValue({}),
+            update: jest.fn().mockResolvedValue({}),
+            remove: jest.fn().mockResolvedValue({} as DeleteResult),
           },
         },
       ],
@@ -60,6 +64,46 @@ describe('CategoryController', () => {
 
         expect(response).toStrictEqual(responseExpected);
       });
+    });
+  });
+
+  describe('Post', () => {
+    describe('create', () => {
+      it('should create a category', async () => {
+        const category: Category = createMockCategory();
+        const categoryRequestDto = CategoryRequestDto.toDto(category);
+
+        const responseExpected: CategoryResponseDto =
+          CategoryResponseDto.toDto(category);
+
+        jest.spyOn(service, 'create').mockResolvedValue(category);
+
+        const response = await controller.create(categoryRequestDto);
+
+        expect(response).toStrictEqual(responseExpected);
+      });
+    });
+  });
+
+  describe('Patch', () => {
+    it('should be able to update a category', async () => {
+      const category: Category = createMockCategory();
+      const categoryRequestDto = CategoryRequestDto.toDto(category);
+      const expectedResponse = CategoryResponseDto.toDto(category);
+
+      jest.spyOn(service, 'update').mockResolvedValue(category);
+
+      const response = await controller.update('1', categoryRequestDto);
+
+      expect(response).toEqual(expectedResponse);
+    });
+  });
+
+  describe('Delete', () => {
+    it('should be able to delete a category', () => {
+      jest.spyOn(service, 'remove').mockResolvedValue({} as DeleteResult);
+
+      expect(controller.remove('1')).resolves.toEqual({});
     });
   });
 

@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Response,
 } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { CreateShopDto } from './dto/shop/create-shop.dto';

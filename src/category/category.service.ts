@@ -37,7 +37,11 @@ export class CategoryService {
     return category;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async update(category: Category): Promise<Category> {
+    await this.findOne(category.id);
+    return this.create(category);
+  }
+  async remove(id: number) {
+    return this.repository.delete(id);
   }
 }

@@ -44,7 +44,10 @@ export class CategoryController {
     @Param('id') id: string,
     @Body() updateCategoryDto: CategoryRequestDto,
   ) {
-    // return this.categoryService.update(+id, updateCategoryDto);
+    const category = Category.toDomain(updateCategoryDto);
+    category.id = +id;
+
+    return this.categoryService.update(category);
   }
 
   @Delete(':id')

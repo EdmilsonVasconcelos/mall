@@ -72,6 +72,40 @@ describe('CategoryService', () => {
     expect(response).toEqual(category);
   });
 
+  it('should be able to update a category', async () => {
+    const category = createMockCategory();
+
+    jest.spyOn(repository, 'findOne').mockResolvedValue(category);
+
+    jest.spyOn(repository, 'save').mockResolvedValue(category);
+
+    const response = await service.update(category);
+
+    expect(response).toEqual(category);
+
+    expect(repository.findOne).toHaveBeenCalledTimes(1);
+
+    expect(repository.save).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be able to throw exception when category is not found on updating', async () => {
+    jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+
+    await expect(service.findOne(1)).rejects.toThrow(
+      'Category with id 1 not found',
+    );
+  });
+
+  it('should be able to remove a category', async () => {
+    jest
+      .spyOn(repository, 'delete')
+      .mockResolvedValue({ affected: 1, raw: {} });
+
+    const response = await service.remove(1);
+
+    expect(response).toEqual({ affected: 1, raw: {} });
+  });
+
   const createMockCategory = () => {
     const category = new Category();
     category.id = 1;
